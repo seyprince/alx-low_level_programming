@@ -11,10 +11,9 @@ int main(void)
 	while (al <= 'z')
 	{
 		if ((al != 'q' && al != 'e') && al <= 'z')
-		{
 			putchar(al);
-			al++;
-		}
+		al++;
 	}
+	putchar('\n');
 	return (0);
 }
