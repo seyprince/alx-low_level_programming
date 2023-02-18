@@ -1,6 +1,6 @@
 #include <stdio.h>
 /**
- * main - printing alphabets
+ * main - print some alphabets
  * Return: 0
  */
 int main(void)
@@ -10,9 +10,11 @@ int main(void)
 	al = 'a';
 	while (al <= 'z')
 	{
-		putchar(al);
-		al++;
-		putchar('\n');
+		if ((al != 'q' && al != 'e') && al <= 'z')
+		{
+			putchar(al);
+			al++;
+		}
 	}
 	return (0);
 }
