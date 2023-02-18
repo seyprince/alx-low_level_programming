@@ -21,5 +21,6 @@ int main(void)
 		putchar(AL);
 		AL++;
 	}
+	putchar('\n');
 	return (0);
 }
