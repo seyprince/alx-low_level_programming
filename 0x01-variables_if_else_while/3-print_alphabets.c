@@ -5,16 +5,16 @@
  */
 int main(void)
 {
-	char al;
+	char all;
 
 	char AL;
 
-	al = 'a';
+	all = 'a';
 	AL = 'A';
-	while (al <= 'z')
+	while (all <= 'z')
 	{
-		putchar(al);
-		al++;
+		putchar(all);
+		all++;
 	}
 	while (AL <= 'Z')
 	{
