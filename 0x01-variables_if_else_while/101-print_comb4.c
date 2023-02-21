@@ -12,7 +12,7 @@ int main(void)
 		for (s = 0 ; s < 10 ; s++)
 		{
 			for (t = 0 ; t < 10 ; t++)
-				if (!(t == s) || (s == f) || (s > t) || (f > s))
+				if (!(t == s || s == f || s > t || f > s))
 				{
 					putchar(f + '0');
 					putchar(s + '0');
