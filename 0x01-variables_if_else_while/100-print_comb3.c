@@ -7,9 +7,9 @@ int main(void)
 {
 	int f, s;
 
-	for (f = 0; f <= 10; f++)
+	for (f = 0; f < 10; f++)
 	{
-		for (s = 0; s <= 10; s++)
+		for (s = 0; s < 10; s++)
 		{
 			if (f * 10 + s < s * 10 + f)
 			{
