@@ -1,10 +1,10 @@
 #include "main.h"
 /**
- * abs - finds the absolute value
+ * _abs - finds the absolute value
  * @c: the number computed
  * Return: absolute number / 0
  */
-int abs(int c)
+int _abs(int c)
 {
 	if (c < 0)
 	{
