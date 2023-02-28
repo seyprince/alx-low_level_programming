@@ -1,6 +1,6 @@
 #include <stdio.h>
 /**
- * main - update the pointer value
+ * reset_to_98 - update the pointer value
  * @n: interger value
  * Return: nothing
  */
