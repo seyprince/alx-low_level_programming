@@ -4,7 +4,7 @@
  * @dest: stored
  * @src: copied
  * @n: number
- * REturn: dest
+ * Return: dest
  */
 
 char *_memcpy(char *dest, char *src, unsigned int n)
