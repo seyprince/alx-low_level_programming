@@ -4,7 +4,7 @@
  * @s: starting
  * @b: byte
  * @n: size
- * Return: 0
+ * Return: changed array
  */
 
 char *_memset(char *s, char b, unsigned int n)
