@@ -1,63 +1,75 @@
 #include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+#include "main.h"
 
-#define DELIMITER ' '
 /**
- * strtow - main split function
- * Return: 0
+ * count_word - counts the number of words
+ * @s: The string to be analysed
+ *
+ * Return: Word count
+ */
+int count_word(char *s)
+{
+	int a, b, flag;
+
+	b = 0;
+	flag = 0;
+
+	for (a = 0; s[a] != '\0'; a++)
+	{
+		if (s[a] == ' ')
+			flag = 0;
+		else if (flag == 0)
+		{
+			flag = 1;
+			b++;
+		}
+	}
+	return (b);
+}
+
+/**
+ * **strtow - Will split a string in to words
+ * @str: The string to be split
+ *
+ * Return: The pointer to an array of strings otherwise NULL
  */
 char **strtow(char *str)
 {
-	char **words;
-	int i, j, len, word_count = 0;
-	
-	if (str == NULL || *str == '\0')
-		return NULL;
-	
-	len = strlen(str);
-	words = malloc((len + 1) * sizeof(char *));
-	if (words == NULL)
-		return NULL;
-	for (i = 0; i < len; i++)
+	char *tmp, **mtx;
+	int x, y = 0, a = 0, len = 0, words, start, stop;
+
+	while (*(str + len))
+		len++;
+	words = count_word(str);
+	if (words == 0)
+		return (NULL);
+
+	mtx = (char **) malloc(sizeof(char *) * (words + 1));
+	if (mtx == NULL)
+		return (NULL);
+
+	for (x = 0; x <= len; x++)
 	{
-		if (str[i] != DELIMITER && (i == 0 || str[i - 1] == DELIMITER))
+		if (str[x] == ' ' || str[x] == '\0')
 		{
-			word_count++;
-			for (j = i; j < len; j++)
+			if (a)
 			{
-				if (str[j] == DELIMITER)
-				{
-					words[word_count - 1] = malloc((j - i + 1) * sizeof(char));
-					if (words[word_count - 1] == NULL)
-					{
-						/* Free all previously allocated memory and return NULL */
-						for (j = 0; j < word_count - 1; j++)
-							free(words[j]);
-						free(words);
-						return NULL;
-					}
-					strncpy(words[word_count - 1], str + i, j - i);
-					words[word_count - 1][j - i] = '\0';
-					break;
-				}
-				if (j == len - 1)
-				{
-					words[word_count - 1] = malloc((j - i + 2) * sizeof(char));
-					if (words[word_count - 1] == NULL)
-					{
-						/* Free all previously allocated memory and return NULL */
-						for (j = 0; j < word_count - 1; j++)
-							free(words[j]);
-						free(words);
-						return NULL;
-					}
-					strncpy(words[word_count - 1], str + i, j - i + 1);
-					words[word_count - 1][j - i + 1] = '\0';
-				}
+				stop = x;
+				tmp = (char *) malloc(sizeof(char) * (a + 1));
+				if (tmp == NULL)
+					return (NULL);
+				while (start < stop)
+					*tmp++ = str[start++];
+				*tmp = '\0';
+				mtx[y] = tmp - a;
+				y++;
+				a = 0;
 			}
 		}
+		else if (a++ == 0)
+			start = x;
 	}
-	words[word_count] = NULL;
-	return words;
+	mtx[y] = NULL;
+
+	return (mtx);
 }
