@@ -1,15 +1,14 @@
-#include <stdio.h>
-#include "main.h"
 #include "dog.h"
-
+#include "main.h"
 /**
- * init_dog - initialize struct dog
- * @d: dog
- * @name: name of dog
- * @age: age of dog
- * @owner: owner of dog
+ * init_dog - initializes a dog
+ * @d: the dog to init
+ * @name: the dog's name
+ * @age: dog's age
+ * @owner: ower's name
+ *
+ * Return: void.
  */
-
 void init_dog(struct dog *d, char *name, float age, char *owner)
 {
 	if (d)
@@ -19,4 +18,3 @@ void init_dog(struct dog *d, char *name, float age, char *owner)
 		d->owner = owner;
 	}
 }
-
