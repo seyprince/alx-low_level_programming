@@ -21,6 +21,11 @@ size_t print_listint(const listint_t *h)
 		h = h->next;
 		count++;
 	}
+
+	if  (count == 0)
+	{
+		printf("-> 0 elements\n");
+	}
 	return (count);
 }
 
