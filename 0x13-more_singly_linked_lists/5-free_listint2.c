@@ -5,14 +5,22 @@
  */
 void free_listint2(listint_t **head)
 {
-	listint_t *cnode;
+	listint_t *cnode, *tempo;
 
-	while (*head != NULL)
+	if (head == NULL)
 	{
-		cnode = *head;
-		*head = (*head)->next;
-		free(cnode);
+		printf("Freed!\n");
+		return;
+	}
+	cnode = *head;
+
+	while (cnode != NULL)
+	{
+		tempo = cnode;
+		cnode = cnode->next;
+		free(tempo);
 	}
 	*head = NULL;
+	printf("Freed!\n");
 }
 
