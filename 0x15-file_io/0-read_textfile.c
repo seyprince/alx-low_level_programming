@@ -1,50 +1,34 @@
 #include "main.h"
+
 /**
- * read_textfile - reads a text file and prints it to standard output
- * @filename: the name of the file to read
- * @letters: the number of letters to read from the file
+ * read_textfile - reads text from file
+ * @filename: file name
+ * @letters: bytes to read
  *
- * Return: the number of letters actually read and printed to standard output,
- * or 0 if the file can not be opened or read, or if write fails to write the
- * expected number of bytes.
+ * Return: number of bytes
  */
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-	FILE *fp;
-	char *buffer;
-	ssize_t bytes_read, bytes_written;
+	int fd;
+	ssize_t nrd, nw;
+	char *buf;
 
-	if (filename == NULL)
-	{
+	if (!filename)
 		return (0);
-	}
-	fp = fopen(filename, "r");
-	if (fp == NULL)
-	{
+
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
 		return (0);
-	}
-	buffer = malloc(letters * sizeof(char));
-	if (buffer == NULL)
-	{
-		fclose(fp);
+	buf = malloc(sizeof(char) * (letters));
+	if (!buf)
 		return (0);
-	}
-	bytes_read = fread(buffer, sizeof(char), letters, fp);
-	if (bytes_read <= 0)
-	{
-		fclose(fp);
-		free(buffer);
-		return (0);
-	}
-	bytes_written = fwrite(buffer, sizeof(char), bytes_read, stdout);
-	if (bytes_written != bytes_read)
-	{
-		fclose(fp);
-		free(buffer);
-		return (0);
-	}
-	fclose(fp);
-	free(buffer);
-	return (bytes_read);
+
+	nrd = read(fd, buf, letters);
+	nw = write(STDOUT_FILENO, buf, nrd);
+
+	close(fd);
+
+	free(buf);
+
+	return (nw);
 }
-
