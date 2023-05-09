@@ -1,48 +1,34 @@
 #include "main.h"
 
-#define BUF_SIZE 1024
-
 /**
- * main - Entry point for the cp program
- * @argc: The number of arguments passed to the program
- * @argv: An array of strings containing the arguments passed to the program
+ * read_textfile - reads text from file
+ * @filename: file name
+ * @letters: bytes to read
  *
- * Return: 0 on success, or an exit code on failure
+ * Return: number
  */
-int main(int argc, char *argv[])
+ssize_t read_textfile(const char *filename, size_t letters)
 {
-	int fd_from, fd_to, bytes_read, bytes_written;
-	char buf[BUF_SIZE];
-	mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
+	int fd;
+	ssize_t nrd, nw;
+	char *buf;
 
-	if (argc != 3)
-		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n"), exit(97);
+	if (!filename)
+		return (0);
 
-	fd_from = open(argv[1], O_RDONLY);
-	if (fd_from == -1)
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]), exit(98);
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+		return (0);
+	buf = malloc(sizeof(char) * (letters));
+	if (!buf)
+		return (0);
 
-	fd_to = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, mode);
-	if (fd_to == -1)
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]), exit(99);
+	nrd = read(fd, buf, letters);
+	nw = write(STDOUT_FILENO, buf, nrd);
 
-	do {
-		bytes_read = read(fd_from, buf, BUF_SIZE);
-		if (bytes_read == -1)
-			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]), exit(98);
+	close(fd);
 
-		bytes_written = write(fd_to, buf, bytes_read);
-		if (bytes_written == -1)
-			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]), exit(99);
+	free(buf);
 
-	} while (bytes_read == BUF_SIZE);
-
-	if (close(fd_from) == -1)
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from), exit(100);
-
-	if (close(fd_to) == -1)
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_to), exit(100);
-
-	return (0);
+	return (nw);
 }
-
