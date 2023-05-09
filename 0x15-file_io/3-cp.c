@@ -1,34 +1,52 @@
 #include "main.h"
 
 /**
- * read_textfile - reads text from file
- * @filename: file name
- * @letters: bytes to read
+ * main - copies the content between files
+ * @argc: arguments passed
+ * @argv: arguments
  *
- * Return: number
+ * Return: 0
  */
-ssize_t read_textfile(const char *filename, size_t letters)
+int main(int argc, char *argv[])
 {
-	int fd;
-	ssize_t nrd, nw;
-	char *buf;
+	int fd_r, fd_w, r, a, b;
+	char buf[BUFSIZ];
 
-	if (!filename)
-		return (0);
-
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
-		return (0);
-	buf = malloc(sizeof(char) * (letters));
-	if (!buf)
-		return (0);
-
-	nrd = read(fd, buf, letters);
-	nw = write(STDOUT_FILENO, buf, nrd);
-
-	close(fd);
-
-	free(buf);
-
-	return (nw);
+	if (argc != 3)
+	{
+		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
+		exit(97);
+	}
+	fd_r = open(argv[1], O_RDONLY);
+	if (fd_r < 0)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		exit(98);
+	}
+	fd_w = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	while ((r = read(fd_r, buf, BUFSIZ)) > 0)
+	{
+		if (fd_w < 0 || write(fd_w, buf, r) != r)
+		{
+			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+			close(fd_r);
+			exit(99);
+		}
+	}
+	if (r < 0)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		exit(98);
+	}
+	a = close(fd_r);
+	b = close(fd_w);
+	if (a < 0 || b < 0)
+	{
+		if (a < 0)
+			dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_r);
+		if (b < 0)
+			dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_w);
+		exit(100);
+	}
+	return (0);
 }
